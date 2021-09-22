@@ -10,11 +10,11 @@
         :title="area"
       ></base-badge>
     </div>
-    <div class="action">
-      <base-button link mode="outline" :to="coachesContactLink"
+    <div class="actions">
+      <base-button mode="outline" link :to="coachContactLink"
         >Contact</base-button
       >
-      <base-button link :to="coachesDetailsLink">View Details</base-button>
+      <base-button link :to="coachDetailsLink">View Details</base-button>
     </div>
   </li>
 </template>
@@ -22,18 +22,19 @@
 <script>
 import BaseButton from '../ui/BaseButton.vue';
 import BaseBadge from '../ui/BaseBadge.vue';
+
 export default {
   components: { BaseButton, BaseBadge },
   props: ['id', 'firstName', 'lastName', 'rate', 'areas'],
   computed: {
     fullName() {
-      return this.firstName + '' + this.lastName;
+      return this.firstName + ' ' + this.lastName;
     },
-    coachesContactLink() {
-      return this.$route.path + '/' + this.id + 'contact'; // coaches/c1/contact
+    coachContactLink() {
+      return this.$route.path + '/' + this.id + '/contact'; // /coaches/c1/contact
     },
-    coachesDetailsLink() {
-      return this.$route.path + '/' + this.id; // coaches/c1
+    coachDetailsLink() {
+      return this.$route.path + '/' + this.id; // /coaches/c1
     }
   }
 };

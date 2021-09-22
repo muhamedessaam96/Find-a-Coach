@@ -1,12 +1,14 @@
 <template>
   <section>
-    <coaches-filter @change-filter="setFilters"></coaches-filter>
+    <coach-filter @change-filter="setFilters"></coach-filter>
   </section>
   <section>
     <base-card>
       <div class="controls">
         <base-button mode="outline">Refresh</base-button>
-        <base-button link to="/register">Register as Coach</base-button>
+        <base-button v-if="!isCoach" link to="/register"
+          >Register as Coach</base-button
+        >
       </div>
       <ul v-if="hasCoaches">
         <coach-item
@@ -15,7 +17,7 @@
           :id="coach.id"
           :first-name="coach.firstName"
           :last-name="coach.lastName"
-          :rate="coach.HourlyRate"
+          :rate="coach.hourlyRate"
           :areas="coach.areas"
         ></coach-item>
       </ul>
@@ -25,12 +27,12 @@
 </template>
 <script>
 import CoachItem from '../../components/coaches/CoachItem.vue';
-import CoachesFilter from '../../components/coaches/CoachesFilter.vue';
+import CoachFilter from '../../components/coaches/CoachFilter.vue';
 import BaseButton from '../../components/ui/BaseButton.vue';
 export default {
   components: {
     CoachItem,
-    CoachesFilter,
+    CoachFilter,
     BaseButton
   },
   data() {
@@ -43,6 +45,9 @@ export default {
     };
   },
   computed: {
+    isCoach() {
+      return this.$store.getters['coaches/isCoach'];
+    },
     filteredCoaches() {
       const coaches = this.$store.getters['coaches/coaches'];
       return coaches.filter(coach => {
