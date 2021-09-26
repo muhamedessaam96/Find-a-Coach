@@ -1,13 +1,31 @@
 export default {
-  registerCoach(context, data) {
+  async registerCoach(context, data) {
+    const userId = context.rootGetters.userId;
     const coachData = {
-      id: context.rootGetters.userId,
       firstName: data.first,
       lastName: data.last,
       description: data.desc,
       hourlyRate: data.rate,
       areas: data.areas
     };
-    context.commit('registerCoach', coachData);
+
+    const response = await fetch(
+      `https://vue-http-demo-1dc13-default-rtdb.firebaseio.com/coaches/${userId}.json`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(coachData)
+      }
+    );
+
+    // const responseDAta = await response.json();
+
+    if (!response.ok) {
+      // erorr ...
+    }
+
+    context.commit('registerCoach', {
+      ...coachData,
+      id: userId
+    });
   }
 };
